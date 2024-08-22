@@ -10,12 +10,16 @@
 		"prisma": "^5.18.0"
 	},
 	"scripts": {
-		"start": "bun run --watch index.ts"
+		"start": "bun run --watch src/index.ts",
+		"db:migrate": "bunx prisma migrate dev --name=create_user_model --schema=./prisma/schema.prisma"
 	},
 	"peerDependencies": {
 		"typescript": "^5.0.0"
 	},
 	"dependencies": {
-		"express": "^4.19.2"
+		"@prisma/client": "5.18.0",
+		"@t3-oss/env-core": "^0.11.0",
+		"express": "^4.19.2",
+		"zod": "^3.23.8"
 	}
 }
