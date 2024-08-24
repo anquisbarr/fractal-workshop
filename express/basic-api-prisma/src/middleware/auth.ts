@@ -1,35 +1,43 @@
 import type { NextFunction, Request, Response } from "express";
 import { jwtVerify } from "jose";
 import { env } from "../config/env";
+import type { WithEmail, WithUser } from "../types/common";
+import getUser from "../services/get-user";
 
 function decodeBase64Secret(base64Secret: string) {
 	return Buffer.from(base64Secret, "base64");
 }
 
+async function parseToken(authorization: string): Promise<WithEmail | null> {
+	try {
+		const token = authorization.split(" ")[1];
+		const secret = decodeBase64Secret(env.JWT_SECRET);
+		const { payload } = await jwtVerify(token, secret);
+		return payload as unknown as WithEmail;
+	} catch (err) {
+		console.log(err);
+		return null;
+	}
+}
+
 export async function secureRoute(
-	req: Request,
+	req: WithUser<Request>,
 	res: Response,
 	next: NextFunction,
 ) {
-	const authHeader = req.headers.authorization;
-	const token = authHeader?.split(" ")[1];
-	console.log(token);
+	const { authorization } = req.headers;
 
-	if (!token) {
+	if (!authorization) {
 		return res.sendStatus(401);
 	}
 
-	try {
-		const secret = decodeBase64Secret(env.JWT_SECRET);
+	const payload = await parseToken(authorization);
+	if (!payload) return res.status(401).send({ msg: "Unauthorized" });
 
-		const { payload } = await jwtVerify(token, secret);
+	const user = await getUser({ email: payload.email });
+	if (!user) return res.status(401).send({ msg: "Unauthorized" });
 
-		console.log(payload);
-		next();
-	} catch (err) {
-		console.error(err);
-		return res.sendStatus(403); // Forbidden if token is invalid
-	}
+	req.user = user;
 
 	next();
 }

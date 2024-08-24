@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
+import type { WithUser } from "../../types/common";
 
-export function getGreeting(_: Request, res: Response) {
-	res.status(200).send({ msg: "Hello World 👑!" });
+export function getGreeting(req: WithUser<Request>, res: Response) {
+	res.send({ msg: `Hello World 👑 ${req.user?.email}` });
 }
