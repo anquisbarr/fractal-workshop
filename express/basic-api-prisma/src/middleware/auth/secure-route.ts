@@ -1,8 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 import { jwtVerify } from "jose";
-import { env } from "../config/env";
-import getUser from "../services/get-user";
-import type { WithEmail, WithUser } from "../types/common";
+import { env } from "../../config/env";
+import getUser from "../../services/get-user";
+import type { WithEmail, WithUser } from "../../types/common";
 
 function decodeBase64Secret(base64Secret: string) {
 	return Buffer.from(base64Secret, "base64");

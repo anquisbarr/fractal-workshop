@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { getGreeting } from "../../controllers/greetings/get";
-import { secureRoute } from "../../middleware/auth";
+import fetchGreetingsController from "../../controllers/greetings/fetch-greetings";
+import getGreetings from "../../controllers/greetings/get-greetings";
+import { secureRoute } from "../../middleware/auth/secure-route";
 
 export const greetingRouter = Router();
 greetingRouter.use(secureRoute);
 
-greetingRouter.route("/").get(getGreeting);
+greetingRouter.route("/").get(fetchGreetingsController);
+greetingRouter.route("/:uuid").get(getGreetings);
 
 export default greetingRouter;
