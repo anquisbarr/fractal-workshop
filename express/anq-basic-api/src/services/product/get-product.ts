@@ -1,16 +1,16 @@
-import type { Category } from "@prisma/client";
+import type { Product } from "@prisma/client";
 import { getProductByName } from "@repository/products/get-product-by-name";
 import type { SingleServiceResponse, WithProductName } from "types/common";
 
 export default async function getProduct({
 	name,
-}: WithProductName): Promise<SingleServiceResponse<Category> | null> {
+}: WithProductName): Promise<SingleServiceResponse<Product[]> | null> {
 	try {
-		const product = await getProductByName({ name });
-		if (!product) return null;
+		const products = await getProductByName({ name });
+		if (!products || products.length === 0) return null;
 
 		return {
-			data: product,
+			data: products,
 			meta: undefined,
 		};
 	} catch (err) {

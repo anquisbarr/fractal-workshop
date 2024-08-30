@@ -1,5 +1,3 @@
-import type { PaginationDto } from "./dto/pagination";
-
 type GenericObject = Record<string, unknown>;
 
 export type GenericMetadata = {
@@ -12,7 +10,7 @@ export type FetchResponse<T = GenericObject, M = GenericMetadata> = {
 	meta: M;
 };
 
-export type ServiceResponse<T = GenericObject, M = PaginationDto> = {
+export type ServiceResponse<T = GenericObject, M = GenericMetadata> = {
 	data: T;
 	meta: M;
 };
