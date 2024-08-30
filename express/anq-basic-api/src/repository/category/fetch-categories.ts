@@ -3,11 +3,11 @@ import type { Category } from "@prisma/client";
 import type { PaginationDto } from "types/dto/pagination";
 
 export async function getAllCategories({
-	page,
-	pageSize,
+  page,
+  pageSize,
 }: PaginationDto): Promise<Category[] | null> {
-	const skip = (page - 1) * pageSize;
-	const take = pageSize;
+  const skip = (page - 1) * pageSize;
+  const take = pageSize;
 
-	return db.category.findMany({ skip, take });
+  return db.category.findMany({ skip, take });
 }
