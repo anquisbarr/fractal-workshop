@@ -1,5 +1,5 @@
 export type PaginationDto = {
-	page: number;
-	pageSize: number;
-	email: string;
+  page: number;
+  pageSize: number;
+  email: string;
 };
